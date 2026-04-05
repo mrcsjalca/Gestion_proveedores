@@ -111,7 +111,12 @@ docker-compose up -d --build
 
 > La primera vez tarda unos minutos mientras descarga las imágenes.
 
-**3. Crea las tablas en la base de datos:**
+**3. Instala las dependencias:**
+```bash
+docker-compose exec app composer install
+```
+
+**4. Crea las tablas en la base de datos:**
 ```bash
 docker-compose exec app php bin/console doctrine:schema:update --force
 ```
@@ -121,6 +126,22 @@ http://localhost:8080
 
 **5. Regístrate para acceder a la aplicación.**
 
+---
+## Problemas comunes
+**Error: dependencias faltantes**
+```bash
+docker-compose exec app composer install
+```
+**Error: contenedores ya existentes**
+```bash
+docker rm -f symfony_app symfony_db symfony_nginx
+docker-compose up -d --build
+```
+**Error: servicios no arrancan correctamente**
+```bash
+docker-compose down -v
+docker-compose up -d --build
+```
 ---
 
 ## Estructura del proyecto
