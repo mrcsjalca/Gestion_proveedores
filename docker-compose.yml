@@ -10,7 +10,12 @@ services:
     volumes:
       - .:/var/www
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+    environment:
+      APP_ENV: dev
+      APP_SECRET: unsecretomuylargoycomplejo
+      DATABASE_URL: "mysql://symfony:symfony@db:3306/gestion_proveedores?serverVersion=8.0&charset=utf8mb4"
 
   nginx:
     image: nginx:alpine
@@ -35,6 +40,10 @@ services:
       - "3307:3306"
     volumes:
       - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
 
 volumes:
   db_data:
